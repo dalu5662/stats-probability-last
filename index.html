@@ -2,106 +2,901 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>统计与概率乐园</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>统计与概率·数学乐园</title>
   
-  <!-- 引用manifest文件 -->
+  <!-- 引用manifest -->
   <link rel="manifest" href="manifest.json">
   
   <!-- 苹果设备图标 -->
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   
-  <!-- 浏览器标签页图标 - 关键部分 -->
+  <!-- 浏览器图标 -->
   <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
   <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png">
   
-  <!-- 主题颜色 -->
+  <!-- PWA必要meta -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="theme-color" content="#42a5f5">
   
   <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
     body {
-      background: linear-gradient(135deg, #42a5f5, #ff9f4b);
-      font-family: system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #42a5f5 0%, #ff9f4b 100%);
+      font-family: 'Comic Sans MS', 'Chalkboard SE', '幼圆', Yuanti SC, system-ui, sans-serif;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
       padding: 15px;
     }
-    .card {
-      background: white;
-      padding: 40px;
-      border-radius: 40px;
-      text-align: center;
-      max-width: 500px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    
+    .app-container {
+      max-width: 1000px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 60px 60px 40px 40px;
+      padding: 25px 20px;
+      box-shadow: 0 30px 40px rgba(0,0,0,0.2), 0 0 0 5px #ffd93d;
+      backdrop-filter: blur(10px);
+      position: relative;
     }
-    h1 {
-      color: #333;
-      font-size: 2.5rem;
-      margin: 20px 0;
+    
+    .app-container::before {
+      content: '📊 📈 📉';
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 30px;
+      background: #ffd93d;
+      padding: 5px 25px;
+      border-radius: 50px;
+      box-shadow: 0 5px 0 #ff9f4b;
     }
-    .icon-large {
-      font-size: 80px;
+    
+    .title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin: 20px 0 15px 0;
+      background: #42a5f5;
+      padding: 15px 25px;
+      border-radius: 60px;
+      border: 4px solid #ff9f4b;
     }
-    button {
-      background: #ff9f4b;
+    
+    .title-main {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .title-main span:first-child {
+      font-size: 3rem;
+      filter: drop-shadow(2px 4px 0 #ff6b6b);
+    }
+    
+    .title-main span:last-child {
+      font-size: 2rem;
+      font-weight: 800;
+      color: white;
+      text-shadow: 3px 3px 0 #ff9f4b;
+    }
+    
+    .install-btn {
+      background: #ff6b6b;
       color: white;
       border: none;
-      padding: 15px 40px;
-      border-radius: 50px;
+      padding: 12px 25px;
+      border-radius: 40px;
       font-size: 1.2rem;
-      font-weight: bold;
+      font-weight: 800;
       cursor: pointer;
-      box-shadow: 0 5px 0 #b26a00;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 6px 0 #b23b3b;
       transition: 0.1s;
-      margin-top: 20px;
+      border: 3px solid white;
+      font-family: inherit;
     }
-    button:active {
-      transform: translateY(5px);
+    
+    .install-btn:active {
+      transform: translateY(6px);
       box-shadow: none;
     }
-    .note {
-      color: #666;
-      margin-top: 20px;
-      font-size: 0.9rem;
-      background: #f5f5f5;
-      padding: 10px;
-      border-radius: 20px;
+    
+    .install-btn.hidden {
+      display: none;
     }
-    .version-tag {
+    
+    .subtitle {
+      background: #ff9f4b;
+      color: white;
+      padding: 15px 25px;
+      border-radius: 40px;
+      margin-bottom: 20px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      text-align: center;
+      border: 4px solid #42a5f5;
+      box-shadow: 0 5px 0 #b26a00;
+    }
+    
+    .card {
+      background: #f8f9ff;
+      border-radius: 50px;
+      padding: 25px 20px;
+      margin: 20px 0;
+      border: 4px solid #42a5f5;
+      box-shadow: 0 8px 0 #1e88e5;
+    }
+    
+    .flex-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .timer-card {
+      background: #2c3e50;
+      color: #ffd93d;
+      border-radius: 50px;
+      padding: 15px 30px;
+      box-shadow: 0 8px 0 #1a2632;
+      border: 4px solid #ff9f4b;
+    }
+    
+    .timer-display {
+      font-size: 3.5rem;
+      font-weight: 800;
+      letter-spacing: 8px;
+      font-family: 'Courier New', monospace;
+      text-shadow: 0 0 10px #ffd93d;
+    }
+    
+    button {
+      background: #42a5f5;
+      border: none;
+      color: white;
+      font-weight: 800;
+      padding: 15px 30px;
+      border-radius: 50px;
+      font-size: 1.2rem;
+      box-shadow: 0 6px 0 #1e88e5;
+      cursor: pointer;
+      border: 3px solid white;
+      transition: 0.1s;
+      font-family: inherit;
+    }
+    
+    button:active {
+      transform: translateY(6px);
+      box-shadow: none;
+    }
+    
+    button:disabled {
+      opacity: 0.5;
+      transform: none;
+      box-shadow: 0 6px 0 #1e88e5;
+      pointer-events: none;
+    }
+    
+    .diff-pill {
+      display: flex;
+      background: white;
+      border-radius: 60px;
+      border: 4px solid #ff9f4b;
+      overflow: hidden;
+    }
+    
+    .diff-pill label {
+      padding: 12px 28px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      font-weight: 700;
+      transition: 0.1s;
+    }
+    
+    input[type="radio"] { display: none; }
+    input[type="radio"]:checked + span { 
+      background: #42a5f5; 
+      color: white;
+      display: block;
+      padding: 12px 28px;
+      margin: -12px -28px;
+    }
+    
+    .ques-item {
+      background: #fff9e6;
+      border-radius: 40px;
+      padding: 20px;
+      margin-bottom: 15px;
+      border: 4px solid #42a5f5;
+      box-shadow: 0 5px 0 #1e88e5;
+    }
+    
+    .ques-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    
+    .ques-text {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #4a4a4a;
+    }
+    
+    .meta-badge {
+      background: #42a5f5;
+      color: white;
+      border-radius: 40px;
+      padding: 8px 20px;
+      font-size: 1rem;
+      font-weight: 700;
+      border: 3px solid white;
+    }
+    
+    .answer-area {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+    
+    .ans-input {
+      width: 150px;
+      padding: 12px 20px;
+      border-radius: 50px;
+      border: 4px solid #ff9f4b;
+      font-size: 1.2rem;
+      text-align: center;
+      font-family: inherit;
+    }
+    
+    .result-badge {
+      font-weight: 800;
+      padding: 10px 25px;
+      border-radius: 40px;
+      font-size: 1.1rem;
+      border: 3px solid white;
+    }
+    
+    .correct-badge { background: #8bc34a; color: white; }
+    .wrong-badge { background: #ff6b6b; color: white; }
+    .pending-badge { background: #ffd93d; color: #4a4a4a; }
+    
+    .hint-section {
+      margin-top: 15px;
+      border-top: 2px dashed #ff9f4b;
+      padding-top: 15px;
+    }
+    
+    .child-hint {
+      background: #e3f2fd;
+      border-radius: 30px;
+      padding: 12px 18px;
+      font-size: 1.1rem;
+      border-left: 8px solid #2196f3;
+      color: #0d3c61;
+      margin-bottom: 10px;
+    }
+    
+    .parent-hint {
+      background: #fff3e0;
+      border-radius: 30px;
+      padding: 12px 18px;
+      font-size: 1rem;
+      border-left: 8px solid #ff9800;
+      color: #663c00;
+      margin-top: 10px;
+    }
+    
+    .parent-btn {
+      background: #ff9800;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 3px 0 #b26a00;
+      transition: 0.1s;
+      border: 2px solid white;
+    }
+    
+    .parent-btn:active {
+      transform: translateY(3px);
+      box-shadow: none;
+    }
+    
+    .hidden {
+      display: none;
+    }
+    
+    .history-panel {
+      background: #2c3e50;
+      color: #ffd93d;
+      border-radius: 40px;
+      padding: 20px;
+      font-size: 1rem;
+      max-height: 180px;
+      overflow-y: auto;
+      border: 4px solid #ff9f4b;
+    }
+    
+    .mistake-panel {
+      background: #fff0f0;
+      border: 6px dashed #ff6b6b;
+      border-radius: 50px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    
+    .mistake-item {
+      background: white;
+      border-radius: 30px;
+      padding: 12px 18px;
+      margin-bottom: 10px;
+      border: 2px solid #ff6b6b;
+    }
+    
+    .footer-actions {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
       margin-top: 20px;
+    }
+    
+    hr {
+      border: 4px solid #42a5f5;
+      border-radius: 10px;
+      margin: 30px 0;
+    }
+    
+    .deco-stats {
+      display: flex;
+      justify-content: space-around;
+      margin: 10px 0;
+      font-size: 2rem;
+    }
+    
+    .offline-badge {
+      background: #ff6b6b;
+      color: white;
+      padding: 5px 15px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-left: 10px;
+      display: inline-block;
+    }
+    
+    .version-tag {
+      text-align: right;
       color: #888;
       font-size: 0.8rem;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <div class="icon-large">📊</div>
-    <h1>统计与概率乐园</h1>
-    <p>这是一个PWA测试页面，用于验证图标是否正确显示。</p>
-    <button onclick="alert('测试成功！')">点击测试</button>
-    <div class="note">
-      ✅ 浏览器标签页应有蓝色直方图图标<br>
-      📲 地址栏右侧应有安装图标（加号）<br>
-      ⚙️ 按 F12 → Application → Manifest 可查看配置
+<div class="app-container">
+  <div class="deco-stats">
+    <span>📊</span> <span>📈</span> <span>📉</span> <span>🎲</span> <span>🧮</span>
+  </div>
+  
+  <div class="title-row">
+    <div class="title-main">
+      <span>📊</span>
+      <span>统计与概率乐园</span>
     </div>
-    <div class="version-tag">
-      版本 v3.0 · 2026年3月
+    <button class="install-btn" id="installBtn">
+      📲 安装到设备
+    </button>
+  </div>
+  
+  <div class="subtitle">
+    🌟 基础5类 · 🎯 奥数6类 · 📝 错题本 · 💡 双层提示
+    <span id="offlineIndicator" class="offline-badge" style="display:none;">📴 离线模式</span>
+  </div>
+
+  <div class="card">
+    <div class="flex-row">
+      <div class="diff-pill">
+        <label><input type="radio" name="diff" value="初级" checked><span>🐣 初级</span></label>
+        <label><input type="radio" name="diff" value="中级"><span>🦊 中级</span></label>
+        <label><input type="radio" name="diff" value="高级"><span>🦉 高级</span></label>
+      </div>
+      <button id="startBtn">🚀 开始20分钟挑战</button>
+    </div>
+    <div class="flex-row" style="margin-top: 25px;">
+      <div class="timer-card"><span class="timer-display" id="timer">20:00</span></div>
+      <button id="submitBtn" disabled>✅ 提交所有答案</button>
     </div>
   </div>
 
-  <script>
-    // 注册Service Worker（如果有的话）
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('service-worker.js').catch(err => {
-          console.log('Service Worker 未注册:', err);
-        });
+  <div id="questionsContainer">
+    <div class="ques-item" style="text-align:center; padding:40px;">
+      🎮 点击"开始20分钟挑战"生成题目
+    </div>
+  </div>
+
+  <hr>
+  <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">
+    <h2 style="color:#4a4a4a; font-size:2rem;">📋 练习记录</h2>
+    <button id="clearMistakesBtn" style="background:#ff6b6b; box-shadow:0 6px 0 #b23b3b;">🗑️ 清空错题</button>
+  </div>
+  <div class="history-panel" id="historyLog">暂无练习记录</div>
+  <div class="mistake-panel" id="mistakeContainer">📕 还没有错题，继续加油！</div>
+
+  <div class="footer-actions">
+    <button id="exportBtn" style="background:#6c5ce7;">📎 导出错题</button>
+    <button id="demoBtn" style="background:#ff9f4b;">🧪 添加示例错题</button>
+    <span style="flex:1; text-align:right; font-size:1rem; color:#4a4a4a;">🐼 快乐学统计 v5.0</span>
+  </div>
+  
+  <div class="version-tag">
+    完整版 · 2026年3月 · 包含全部统计与概率功能
+  </div>
+</div>
+
+<script>
+(function(){
+  // ========== 注册 Service Worker ==========
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('service-worker.js').then(function(registration) {
+        console.log('ServiceWorker 注册成功:', registration.scope);
+        if (!navigator.onLine) {
+          document.getElementById('offlineIndicator').style.display = 'inline-block';
+        }
+      }).catch(function(error) {
+        console.log('ServiceWorker 注册失败:', error);
       });
+    });
+    
+    window.addEventListener('online', function() {
+      document.getElementById('offlineIndicator').style.display = 'none';
+    });
+    
+    window.addEventListener('offline', function() {
+      document.getElementById('offlineIndicator').style.display = 'inline-block';
+    });
+  }
+
+  // ========== 基础题库模板（5类） ==========
+  const BASE_TEMPLATES = [
+    {
+      type: "数据分类",
+      generate: () => {
+        const fruits = ["苹果", "香蕉", "橙子", "葡萄", "草莓"];
+        const colors = ["红色", "黄色", "橙色", "紫色", "红色"];
+        const index = Math.floor(Math.random() * fruits.length);
+        return {
+          text: `🍎 将下面水果按颜色分类：${fruits.join('、')}。请问${fruits[index]}属于什么颜色？`,
+          ans: colors[index],
+          childHint: `🤔 想想${fruits[index]}通常是什么颜色？`,
+          parentHint: `${fruits[index]}通常是${colors[index]}色的`
+        };
+      }
+    },
+    {
+      type: "数据的收集",
+      generate: () => {
+        const subjects = ["语文", "数学", "英语", "体育", "音乐"];
+        const votes = [12, 15, 8, 10, 7];
+        const index = Math.floor(Math.random() * subjects.length);
+        return {
+          text: `📝 班级调查最喜欢的科目，结果：${subjects.map((s,i)=>`${s}${votes[i]}票`).join('、')}。${subjects[index]}有多少票？`,
+          ans: votes[index],
+          childHint: `🤔 在统计表中找到${subjects[index]}对应的数字`,
+          parentHint: `${subjects[index]}有${votes[index]}票`
+        };
+      }
+    },
+    {
+      type: "数据的整理与表示",
+      generate: () => {
+        const months = ["一月", "二月", "三月", "四月", "五月"];
+        const days = [31, 28, 31, 30, 31];
+        const index = Math.floor(Math.random() * months.length);
+        return {
+          text: `📊 统计表中显示：${months.map((m,i)=>`${m}有${days[i]}天`).join('、')}。${months[index]}有多少天？`,
+          ans: days[index],
+          childHint: `🤔 在表格中找到${months[index]}那一行`,
+          parentHint: `${months[index]}有${days[index]}天`
+        };
+      }
+    },
+    {
+      type: "数据的基本分析",
+      generate: () => {
+        const scores = [85, 92, 78, 88, 95];
+        const sum = scores.reduce((a,b)=>a+b,0);
+        const avg = Math.round(sum / scores.length * 10) / 10;
+        return {
+          text: `📈 小明的数学成绩：${scores.join('、')}。这组数据的平均数是多少？`,
+          ans: avg,
+          childHint: `🤔 平均数 = 总和 ÷ 个数`,
+          parentHint: `总和 = ${sum}，个数 = 5，平均数 = ${sum} ÷ 5 = ${avg}`
+        };
+      }
+    },
+    {
+      type: "随机现象初步",
+      generate: () => {
+        const red = Math.floor(Math.random() * 3) + 2;
+        const blue = Math.floor(Math.random() * 2) + 1;
+        const total = red + blue;
+        return {
+          text: `🎲 盒子里有${red}个红球和${blue}个蓝球，任意摸一个，摸到红球的可能性是几分之几？`,
+          ans: `${red}/${total}`,
+          childHint: `🤔 可能性 = 红球个数 ÷ 总球数`,
+          parentHint: `红球${red}个，总球${total}个，可能性 = ${red}/${total}`
+        };
+      }
     }
-  </script>
+  ];
+
+  // ========== 奥数题库模板（6类） ==========
+  const OLYMPIC_TEMPLATES = [
+    {
+      type: "平均数进阶",
+      generate: () => {
+        const nums = [8, 12, 15, 20, 25];
+        const avg = Math.round(nums.reduce((a,b)=>a+b,0) / nums.length * 10) / 10;
+        return {
+          text: `📊 一组数据：${nums.join('、')}。求这组数据的平均数。`,
+          ans: avg,
+          childHint: `🤔 把所有数加起来，再除以个数`,
+          parentHint: `总和 = ${nums.reduce((a,b)=>a+b,0)}，个数 = ${nums.length}，平均数 = ${avg}`
+        };
+      }
+    },
+    {
+      type: "中位数与众数",
+      generate: () => {
+        const data = [5, 7, 8, 8, 10, 12, 15];
+        const median = 8;
+        const mode = 8;
+        return {
+          text: `📈 数据：5,7,8,8,10,12,15。求中位数和众数（用逗号分隔）。`,
+          ans: `${median},${mode}`,
+          childHint: `🤔 中位数是按大小排序中间的数，众数是出现最多的数`,
+          parentHint: `排序后中间是8，出现最多的是8，所以中位数8，众数8`
+        };
+      }
+    },
+    {
+      type: "统计图表的综合分析",
+      generate: () => {
+        return {
+          text: `📊 条形统计图显示：一班25人，二班30人，三班28人。哪个班人数最多？`,
+          ans: "二班",
+          childHint: `🤔 比较三个班的数字，哪个最大？`,
+          parentHint: `二班30人最多`
+        };
+      }
+    },
+    {
+      type: "概率计算",
+      generate: () => {
+        return {
+          text: `🎲 同时掷两枚骰子，点数之和为7的概率是多少？`,
+          ans: "6/36",
+          childHint: `🤔 所有可能结果有36种，和为7的情况有哪些？`,
+          parentHint: `和为7有(1,6)(2,5)(3,4)(4,3)(5,2)(6,1)共6种，概率=6/36`
+        };
+      }
+    },
+    {
+      type: "游戏公平性",
+      generate: () => {
+        return {
+          text: `🎮 两人轮流掷骰子，甲掷到偶数得1分，乙掷到大于4得1分。这个游戏公平吗？`,
+          ans: "不公平",
+          childHint: `🤔 分别算两人得分的概率是否相等`,
+          parentHint: `甲概率=3/6=1/2，乙概率=2/6=1/3，不公平`
+        };
+      }
+    },
+    {
+      type: "排列组合基础",
+      generate: () => {
+        return {
+          text: `🔢 从3本不同的书中选2本，有多少种选法？`,
+          ans: 3,
+          childHint: `🤔 可以用枚举法：书A、B、C，选2本有几种？`,
+          parentHint: `AB、AC、BC共3种`
+        };
+      }
+    }
+  ];
+
+  function generateQuestionsFromTemplates(templates, count) {
+    const shuffled = [...templates];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled.slice(0, count).map(template => {
+      const generated = template.generate();
+      return {
+        ...generated,
+        mainCat: BASE_TEMPLATES.includes(template) ? "基础题" : "奥数题",
+        subCat: template.type,
+        userAnswer: null,
+        isCorrect: null
+      };
+    });
+  }
+
+  window.toggleParentHint = function(idx) {
+    const hintDiv = document.getElementById(`parentHint_${idx}`);
+    if (hintDiv) hintDiv.classList.toggle('hidden');
+  };
+
+  const app = {
+    currentQuestions: [],
+    timerInterval: null,
+    secondsLeft: 1200,
+    active: false,
+    difficulty: '初级',
+    mistakeList: [],
+    deferredPrompt: null,
+    submitted: false,
+    BASE_TEMPLATES: BASE_TEMPLATES,
+    OLYMPIC_TEMPLATES: OLYMPIC_TEMPLATES,
+
+    init: function() {
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        this.deferredPrompt = e;
+      });
+
+      document.getElementById('installBtn').addEventListener('click', () => {
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        const isAndroid = /Android/.test(navigator.userAgent);
+        
+        let message = '';
+        if (isIOS) {
+          message = '📱 在iPad/iPhone上安装：\n\n1. 点击底部中间的「分享」按钮 📤\n2. 向下滑动，选择「添加到主屏幕」\n3. 点击右上角「添加」';
+        } else if (isAndroid) {
+          message = '📱 在安卓手机上安装：\n\n1. 点击右上角菜单「⋯」\n2. 选择「添加到主屏幕」\n3. 点击「自动添加」';
+        } else {
+          message = '💻 在电脑上安装：\n\n1. 点击地址栏右侧的「安装」图标 ➕\n2. 或者点击右上角菜单「⋯」→「应用」→「将此站点作为应用安装」';
+        }
+        alert(message);
+      });
+
+      document.getElementById('startBtn').addEventListener('click', () => this.startNew());
+      document.getElementById('submitBtn').addEventListener('click', () => this.submitAll());
+      document.getElementById('clearMistakesBtn').addEventListener('click', () => this.clearMistakes());
+      document.getElementById('exportBtn').addEventListener('click', () => this.exportMistakes());
+      document.getElementById('demoBtn').addEventListener('click', () => this.addDemoMistake());
+
+      document.querySelectorAll('input[name="diff"]').forEach(r => {
+        r.addEventListener('change', (e) => { this.difficulty = e.target.value; });
+      });
+
+      this.loadMistakes();
+    },
+
+    startNew: function() {
+      if(this.timerInterval) clearInterval(this.timerInterval);
+      this.secondsLeft = 1200;
+      this.active = true;
+      this.submitted = false;
+      this.updateTimer();
+      this.generatePaper();
+      this.timerInterval = setInterval(() => this.tick(), 1000);
+      document.getElementById('submitBtn').disabled = false;
+      document.getElementById('startBtn').disabled = true;
+      this.addLog(`▶ 开始 ${this.difficulty} 难度练习`);
+    },
+
+    tick: function() {
+      if(!this.active) return;
+      this.secondsLeft--;
+      this.updateTimer();
+      if(this.secondsLeft <= 0) {
+        this.secondsLeft = 0;
+        this.updateTimer();
+        this.active = false;
+        clearInterval(this.timerInterval);
+        document.getElementById('startBtn').disabled = false;
+        document.getElementById('submitBtn').disabled = true;
+        this.addLog("⌛ 时间到，练习结束");
+      }
+    },
+
+    updateTimer: function() {
+      const m = Math.floor(this.secondsLeft / 60);
+      const s = this.secondsLeft % 60;
+      document.getElementById('timer').innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+    },
+
+    generatePaper: function() {
+      const totalQuestions = 6;
+      if (this.difficulty === '初级') {
+        this.currentQuestions = generateQuestionsFromTemplates(BASE_TEMPLATES, totalQuestions);
+      } else if (this.difficulty === '高级') {
+        this.currentQuestions = generateQuestionsFromTemplates(OLYMPIC_TEMPLATES, totalQuestions);
+      } else {
+        const baseCount = Math.floor(totalQuestions * 0.7);
+        const olympicCount = totalQuestions - baseCount;
+        const baseQuestions = generateQuestionsFromTemplates(BASE_TEMPLATES, baseCount);
+        const olympicQuestions = generateQuestionsFromTemplates(OLYMPIC_TEMPLATES, olympicCount);
+        this.currentQuestions = [...baseQuestions, ...olympicQuestions];
+        for (let i = this.currentQuestions.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [this.currentQuestions[i], this.currentQuestions[j]] = [this.currentQuestions[j], this.currentQuestions[i]];
+        }
+      }
+      this.renderQuestions();
+    },
+
+    renderQuestions: function() {
+      const container = document.getElementById('questionsContainer');
+      let html = '';
+      this.currentQuestions.forEach((q, idx) => {
+        let statusClass = 'pending-badge', statusText = '⏳ 待批';
+        if(q.isCorrect === true) { statusClass = 'correct-badge'; statusText = '✅ 正确'; }
+        else if(q.isCorrect === false) { statusClass = 'wrong-badge'; statusText = '❌ 错误'; }
+
+        const inputDisabled = (!this.active && this.secondsLeft <= 0) || this.submitted ? 'disabled' : '';
+
+        html += `<div class="ques-item">
+          <div class="ques-header">
+            <span class="ques-text">${idx+1}. ${q.text}</span>
+            <span class="meta-badge">${q.mainCat} · ${q.subCat}</span>
+          </div>
+          <div class="answer-area">
+            <input class="ans-input" type="text" id="ans_${idx}" placeholder="答案" value="${q.userAnswer||''}" ${inputDisabled}>
+            <span class="result-badge ${statusClass}">${statusText}</span>
+          </div>
+          ${q.isCorrect !== null ? `
+          <div class="hint-section">
+            <div class="child-hint">${q.childHint}</div>
+            <button class="parent-btn" onclick="toggleParentHint(${idx})">🔍 家长查看解析</button>
+            <div class="parent-hint hidden" id="parentHint_${idx}">📝 ${q.parentHint}</div>
+          </div>
+          ` : ''}
+        </div>`;
+      });
+      container.innerHTML = html;
+    },
+
+    submitAll: function() {
+      this.currentQuestions.forEach((q, idx) => {
+        const input = document.getElementById(`ans_${idx}`);
+        if(input) q.userAnswer = input.value.trim();
+      });
+
+      let correct = 0;
+      this.currentQuestions.forEach(q => {
+        let right = false;
+        if (typeof q.ans === 'number') {
+          right = Math.abs(parseFloat(q.userAnswer) - q.ans) < 0.01;
+        } else {
+          right = q.userAnswer.trim().toLowerCase() === q.ans.toString().toLowerCase();
+        }
+        q.isCorrect = right;
+        if(right) correct++;
+        else if(q.userAnswer) this.addMistake(q);
+      });
+      
+      const percent = ((correct/this.currentQuestions.length)*100).toFixed(1);
+      this.addLog(`📊 提交答案 - 正确率: ${correct}/${this.currentQuestions.length} (${percent}%)`);
+      
+      if(this.timerInterval) {
+        clearInterval(this.timerInterval);
+        this.timerInterval = null;
+      }
+      this.active = false;
+      this.submitted = true;
+      document.getElementById('submitBtn').disabled = true;
+      document.getElementById('startBtn').disabled = false;
+      this.renderQuestions();
+    },
+
+    addMistake: function(q) {
+      const exists = this.mistakeList.some(m => m.text === q.text && m.correctAns === q.ans);
+      if (!exists) {
+        this.mistakeList.unshift({
+          text: q.text,
+          correctAns: q.ans,
+          mainCat: q.mainCat,
+          subCat: q.subCat,
+          childHint: q.childHint,
+          parentHint: q.parentHint,
+          date: new Date().toLocaleTimeString()
+        });
+        if(this.mistakeList.length > 20) this.mistakeList.pop();
+        this.saveMistakes();
+        this.updateMistakeUI();
+      }
+    },
+
+    updateMistakeUI: function() {
+      const div = document.getElementById('mistakeContainer');
+      if(!this.mistakeList.length) {
+        div.innerHTML = '📕 还没有错题，继续加油！';
+        return;
+      }
+      let html = '<strong>📕 错题本 (最近5条)</strong>';
+      this.mistakeList.slice(0,5).forEach(m => {
+        html += `<div class="mistake-item">
+          <div><b>${m.text}</b> 正确答案: ${m.correctAns} [${m.subCat}]</div>
+          <div class="child-hint" style="margin-top:8px;">🤔 ${m.childHint}</div>
+          <div class="parent-hint" style="margin-top:5px;">📝 ${m.parentHint}</div>
+          <div style="font-size:0.8rem; color:#999; margin-top:5px;">${m.date}</div>
+        </div>`;
+      });
+      div.innerHTML = html;
+    },
+
+    addLog: function(msg) {
+      const logDiv = document.getElementById('historyLog');
+      const entry = document.createElement('div');
+      entry.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+      logDiv.prepend(entry);
+      if(logDiv.children.length > 8) logDiv.removeChild(logDiv.lastChild);
+    },
+
+    clearMistakes: function() {
+      this.mistakeList = [];
+      this.saveMistakes();
+      this.updateMistakeUI();
+      this.addLog('🗑️ 清空错题本');
+    },
+
+    exportMistakes: function() {
+      alert(JSON.stringify(this.mistakeList, null, 2));
+    },
+
+    addDemoMistake: function() {
+      this.addMistake({
+        text: "🎲 掷骰子出现6点的概率是多少？",
+        ans: "1/6",
+        mainCat: "基础题",
+        subCat: "随机现象初步",
+        childHint: "🤔 骰子有6个面，6点只是其中一面",
+        parentHint: "概率 = 1 ÷ 6 = 1/6"
+      });
+    },
+
+    saveMistakes: function() {
+      localStorage.setItem('statsMistakes', JSON.stringify(this.mistakeList));
+    },
+
+    loadMistakes: function() {
+      const data = localStorage.getItem('statsMistakes');
+      if(data) this.mistakeList = JSON.parse(data);
+      this.updateMistakeUI();
+    }
+  };
+
+  window.app = app;
+  window.onload = () => app.init();
+})();
+</script>
 </body>
 </html>
