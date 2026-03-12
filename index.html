@@ -5,14 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>统计与概率乐园</title>
   
-  <!-- 引用 manifest 文件 -->
+  <!-- 引用manifest文件 -->
   <link rel="manifest" href="manifest.json">
   
   <!-- 苹果设备图标 -->
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   
-  <!-- 浏览器标签页图标 -->
+  <!-- 浏览器标签页图标 - 关键部分 -->
   <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png">
   
   <!-- 主题颜色 -->
   <meta name="theme-color" content="#42a5f5">
@@ -41,7 +42,7 @@
       font-size: 2.5rem;
       margin: 20px 0;
     }
-    .icon {
+    .icon-large {
       font-size: 80px;
     }
     button {
@@ -69,23 +70,31 @@
       padding: 10px;
       border-radius: 20px;
     }
+    .version-tag {
+      margin-top: 20px;
+      color: #888;
+      font-size: 0.8rem;
+    }
   </style>
 </head>
 <body>
   <div class="card">
-    <div class="icon">📊</div>
+    <div class="icon-large">📊</div>
     <h1>统计与概率乐园</h1>
-    <p>这是一个 PWA 测试页面，用于验证图标是否正确显示。</p>
+    <p>这是一个PWA测试页面，用于验证图标是否正确显示。</p>
     <button onclick="alert('测试成功！')">点击测试</button>
     <div class="note">
       ✅ 浏览器标签页应有蓝色直方图图标<br>
       📲 地址栏右侧应有安装图标（加号）<br>
       ⚙️ 按 F12 → Application → Manifest 可查看配置
     </div>
+    <div class="version-tag">
+      版本 v3.0 · 2026年3月
+    </div>
   </div>
 
   <script>
-    // 注册 Service Worker（如果有的话）
+    // 注册Service Worker（如果有的话）
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('service-worker.js').catch(err => {
